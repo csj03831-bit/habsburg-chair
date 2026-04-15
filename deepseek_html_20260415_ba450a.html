@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>The Habsburg Chair | From Luther to War – A Dynasty's Fate</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #0a0804;
+            font-family: 'IM Fell English', 'Cinzel', 'Times New Roman', serif;
+            color: #f0e6d0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            padding: 1rem;
+        }
+        .game-container {
+            max-width: 1000px;
+            width: 100%;
+            margin: 1rem auto;
+            background: linear-gradient(145deg, #1e1a10 0%, #0f0c06 100%);
+            border: 12px double #b68b40;
+            border-radius: 28px;
+            box-shadow: 0 20px 35px rgba(0,0,0,0.8), inset 0 1px 4px rgba(255,245,200,0.1);
+            padding: 1.8rem 1.5rem;
+            position: relative;
+        }
+        .title-section {
+            text-align: center;
+            border-bottom: 2px solid #b48b3a;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.8rem;
+            position: relative;
+            padding-right: 120px;
+        }
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 2rem;
+            letter-spacing: 2px;
+            color: #e9d6a3;
+            text-shadow: 3px 3px 0 #2a1e0e;
+        }
+        .sub {
+            font-style: italic;
+            font-size: 0.9rem;
+            color: #cdba7a;
+        }
+        .lang-selector {
+            position: absolute;
+            top: 0.5rem;
+            right: 0;
+            background: #2b241a;
+            border: 1px solid #b68b40;
+            border-radius: 40px;
+            padding: 4px 12px;
+            z-index: 10;
+        }
+        .lang-selector select {
+            background: transparent;
+            border: none;
+            color: #f7eed9;
+            font-family: inherit;
+            font-size: 0.8rem;
+            outline: none;
+            cursor: pointer;
+        }
+        .start-screen {
+            text-align: center;
+            padding: 2rem 1rem;
+        }
+        .start-btn {
+            background: #846c38;
+            border: none;
+            font-family: 'Cinzel', serif;
+            font-size: 1.6rem;
+            font-weight: bold;
+            padding: 16px 48px;
+            border-radius: 60px;
+            color: #1f1a0a;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 6px 0 #4a3a1e;
+            margin-top: 2rem;
+        }
+        .start-btn:hover {
+            background: #b58f44;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 0 #4a3a1e;
+        }
+        .title-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 50vh;
+            gap: 2rem;
+            animation: fadeIn 0.5s ease;
+        }
+        .title-page .chapter-main-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #e9d6a3;
+            text-shadow: 3px 3px 0 #2a1e0e;
+            letter-spacing: 3px;
+            border: none;
+            padding: 0;
+        }
+        .scene-page {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+        .cinematic-bg {
+            width: 100%;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.8);
+            border: 1px solid #b68b40;
+            filter: contrast(1.1) brightness(0.8) sepia(0.15);
+            background: #000;
+        }
+        .cinematic-bg img {
+            width: 100%;
+            height: auto;
+            max-height: 380px;
+            object-fit: cover;
+            display: block;
+        }
+        .situation-card {
+            background: #1c1710dd;
+            backdrop-filter: blur(5px);
+            border-radius: 24px;
+            padding: 1.2rem 1.5rem;
+            border: 1px solid #c2a15b;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+        }
+        .role-line {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #f3da9b;
+            margin-bottom: 0.8rem;
+            letter-spacing: 1px;
+        }
+        .situation-text {
+            line-height: 1.5;
+        }
+        .proceed-btn {
+            background: #846c38;
+            border: none;
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 12px 32px;
+            border-radius: 60px;
+            color: #1f1a0a;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 1rem;
+            align-self: center;
+        }
+        .proceed-btn:hover {
+            background: #b58f44;
+            transform: scale(1.02);
+        }
+        .options-page {
+            animation: fadeIn 0.4s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .option-btn {
+            background: #2f2819;
+            border: 2px solid #c2a15b;
+            border-radius: 60px;
+            padding: 1rem 1.2rem;
+            font-family: 'IM Fell English', serif;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #fcf3db;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .option-btn:hover {
+            background: #5e4a2e;
+            border-color: #e7bd6a;
+            transform: scale(1.01);
+        }
+        .option-icon { font-size: 1.8rem; min-width: 48px; text-align: center; }
+        .option-text { flex: 1; }
+        .option-desc { font-size: 0.85rem; opacity: 0.85; }
+        .outcome-full-page {
+            background: #1c1710e6;
+            border-left: 10px solid #dbb05c;
+            padding: 1.5rem;
+            border-radius: 28px;
+            margin: 1rem 0;
+        }
+        .outcome-img {
+            width: 100%;
+            max-height: 240px;
+            object-fit: cover;
+            border-radius: 20px;
+            margin-bottom: 1rem;
+            border: 2px solid #c2a15b;
+        }
+        .next-btn, .restart-btn {
+            background: #846c38;
+            border: none;
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            padding: 10px 22px;
+            font-size: 1rem;
+            border-radius: 40px;
+            color: #231f14;
+            cursor: pointer;
+            margin-right: 12px;
+            margin-top: 12px;
+            transition: 0.2s;
+        }
+        .next-btn:hover, .restart-btn:hover { background: #b58f44; transform: translateY(-2px); }
+        .flex-buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 20px; }
+        .consequences-wall {
+            background: #1c1710cc;
+            border: 1px solid #b49251;
+            border-radius: 24px;
+            padding: 1.2rem;
+            margin: 1rem 0;
+        }
+        .timeline-item {
+            display: flex;
+            border-bottom: 1px solid #7e643a;
+            padding: 12px 5px;
+            gap: 12px;
+            flex-wrap: wrap;
+            font-size: 0.9rem;
+        }
+        .year { font-weight: bold; min-width: 70px; color: #f3cf7a; }
+        .decision { flex: 2; }
+        .consequence { flex: 2; color: #dbbc7c; line-height: 1.4; word-break: break-word; }
+        .share-section {
+            text-align: center;
+            margin-top: 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+        }
+        .email-btn, .link-copy-btn {
+            background: #2b5f4b;
+            border: none;
+            padding: 10px 20px;
+            font-family: 'Cinzel', serif;
+            border-radius: 50px;
+            font-weight: bold;
+            color: #f9efcf;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        .link-copy-btn { background: #5e4a2e; }
+        .copy-icon, .email-icon { font-size: 1.2rem; }
+        footer {
+            font-size: 0.75rem;
+            text-align: center;
+            margin-top: 1.8rem;
+            color: #b1965a;
+        }
+        @media (max-width: 550px) {
+            .game-container { padding: 1rem; }
+            body { font-size: 18px; }
+            h1 { font-size: 1.6rem; }
+            .title-section { padding-right: 80px; }
+            .title-page .chapter-main-title { font-size: 1.5rem; }
+            .timeline-item { flex-direction: column; gap: 4px; }
+            .consequence { margin-left: 70px; }
+        }
+    </style>
+</head>
+<body>
+<div class="game-container" id="gameRoot">
+    <div class="title-section">
+        <h1>🏰 THE HABSBURG CHAIR</h1>
+        <div class="sub" id="gameSub">From Luther to War — Four Decisions That Shaped a Continent</div>
+        <div class="lang-selector"><select id="languageSwitcher">
+            <option value="en">🇬🇧 English</option><option value="zh-CN">🇨🇳 简体中文</option>
+            <option value="zh-TW">🇹🇼 繁體中文</option><option value="es">🇪🇸 Español</option><option value="ja">🇯🇵 日本語</option>
+        </select></div>
+    </div>
+    <div id="dynamicContent"></div>
+    <footer>⚔️ 1517–1648 | Faith, Power & Catastrophe ⚔️</footer>
+</div>
+
+<script>
+    // ==================== MULTILANGUAGE ====================
+    let currentLang = 'en';
+    const translations = {
+        start_game: { en: '⚔️ LET\'S START ⚔️', 'zh-CN': '⚔️ 开始游戏 ⚔️', 'zh-TW': '⚔️ 開始遊戲 ⚔️', es: '⚔️ COMENCEMOS ⚔️', ja: '⚔️ 始める ⚔️' },
+        intro_text: { en: 'Step into the Habsburg dynasty. Witness four crossroads that changed Europe forever. Your decisions will echo through history.', 
+            'zh-CN': '步入哈布斯堡王朝。见证永远改变欧洲的四个十字路口。你的选择将在历史中回响。',
+            'zh-TW': '步入哈布斯堡王朝。見證永遠改變歐洲的四個十字路口。你的選擇將在歷史中迴響。',
+            es: 'Adéntrate en la dinastía Habsburgo. Sé testigo de cuatro encrucijadas que cambiaron Europa para siempre.',
+            ja: 'ハプスブルク王朝へ。欧州を永遠に変えた四つの岐路を目撃せよ。' },
+        proceed_to_choices: { en: '➡ PROCEED TO CHOICES ⬅', 'zh-CN': '➡ 前往抉择 ⬅', 'zh-TW': '➡ 前往抉擇 ⬅', es: '➡ PROCEDER A LAS DECISIONES ⬅', ja: '➡ 選択へ進む ⬅' },
+        continue_next: { en: '⟫ CONTINUE TO NEXT DECISION', 'zh-CN': '⟫ 继续下一个抉择', 'zh-TW': '⟫ 繼續下一個抉擇', es: '⟫ CONTINUAR A LA SIGUIENTE DECISIÓN', ja: '⟫ 次の決断へ' },
+        view_final: { en: '📜 FINAL CONSEQUENCES', 'zh-CN': '📜 最终后果墙', 'zh-TW': '📜 最終後果牆', es: '📜 CONSECUENCIAS FINALES', ja: '📜 最終結果へ' },
+        restart_btn: { en: '⟳ RESTART GAME', 'zh-CN': '⟳ 重新开始游戏', 'zh-TW': '⟳ 重新開始遊戲', es: '⟳ REINICIAR JUEGO', ja: '⟳ ゲームを再開' },
+        email_results: { en: '📧 EMAIL MY RESULTS', 'zh-CN': '📧 邮箱发送结果', 'zh-TW': '📧 郵箱發送結果', es: '📧 ENVIAR RESULTADOS POR CORREO', ja: '📧 結果をメール送信' },
+        copy_link: { en: '🔗 COPY RESULTS LINK', 'zh-CN': '🔗 复制结果链接', 'zh-TW': '🔗 複製結果連結', es: '🔗 COPIAR ENLACE DE RESULTADOS', ja: '🔗 結果リンクをコピー' },
+        your_verdict: { en: 'Your Verdict', 'zh-CN': '您的裁决', 'zh-TW': '您的裁決', es: 'Su Veredicto', ja: 'あなたの評決' }
+    };
+    function t(key) { return (translations[key] && translations[key][currentLang]) || (translations[key] && translations[key]['en']) || key; }
+
+    // ==================== CHAPTERS ====================
+    const CHAPTERS = [
+        { // Chapter 0: Charles V, 1521
+            monarch: "Charles V",
+            year: "1521",
+            bgImg: "https://th.bing.com/th/id/R.7da815f355cf5daa6b13c55d3713325e?rik=uOPPWtcKHXalkw&pid=ImgRaw&r=0",
+            mainTitle: { en: "⚜️ CHAPTER 0: CHARLES V · THE MONK AND THE INDULGENCES", 'zh-CN': "⚜️ 第0章：查理五世 · 修士与赎罪券", 'zh-TW': "⚜️ 第0章：查理五世 · 修士與贖罪券", es: "⚜️ CAPÍTULO 0: CARLOS V · EL MONJE Y LAS INDULGENCIAS", ja: "⚜️ 第0章：カール5世 · 修道士と免罪符" },
+            roleDesc: { en: "Emperor Charles V, ruler of the Habsburg Empire and the most powerful Catholic monarch in Europe.", 'zh-CN': "皇帝查理五世，哈布斯堡帝国的统治者，欧洲最强大的天主教君主。", 'zh-TW': "皇帝查理五世，哈布斯堡帝國的統治者，歐洲最強大的天主教君主。", es: "Emperador Carlos V, gobernante del Imperio Habsburgo y el monarca católico más poderoso de Europa.", ja: "神聖ローマ皇帝カール5世、ハプスブルク帝国の統治者。" },
+            situation: { en: "1517–1521. A German monk named Martin Luther nailed 95 complaints to a church door. He says the Catholic Church is wrong to sell indulgences – forgiveness for money. The Pope demands you stop him. Germany is watching.",
+                'zh-CN': "1517–1521年。一位名叫马丁·路德的德国修士将95条论纲钉在教堂门上。他认为天主教会出售赎罪券是错误的——用金钱换取宽恕。教皇要求你阻止他。德意志正在观望。",
+                'zh-TW': "1517–1521年。一位名叫馬丁·路德的德國修士將95條論綱釘在教堂門上。他認為天主教會出售贖罪券是錯誤的——用金錢換取寬恕。教皇要求你阻止他。德意志正在觀望。",
+                es: "1517–1521. Un monje alemán llamado Martín Lutero clavó 95 tesis en la puerta de la iglesia. El Papa exige que lo detengas. Alemania observa.",
+                ja: "1517–1521年。マルティン・ルターというドイツの修道士が95ヶ条の論題を教会の扉に貼り出した。教皇はあなたに彼の阻止を要求する。" },
+            options: [
+                { icon: "✋🔨", title: { en: "Crush Luther", 'zh-CN': "镇压路德", 'zh-TW': "鎮壓路德", es: "Aplastar a Lutero", ja: "ルターを押し潰せ" }, desc: { en: "Declare him heretic, enforce papal authority.", 'zh-CN': "宣布他为异端，强制执行教皇权威。", 'zh-TW': "宣布他為異端，強制執行教皇權威。", es: "Declararlo hereje, imponer autoridad papal.", ja: "彼を異端と宣言し、教皇の権威を強制する。" } },
+                { icon: "👂📖", title: { en: "Hear him out", 'zh-CN': "听取他的意见", 'zh-TW': "聽取他的意見", es: "Escucharlo", ja: "彼の話を聞く" }, desc: { en: "Summon Luther to the Diet, give fair hearing.", 'zh-CN': "召集路德参加帝国会议，给予公正听证。", 'zh-TW': "召集路德參加帝國會議，給予公正聽證。", es: "Convocar a Lutero a la Dieta.", ja: "ルターを帝国議会に召喚し、公正な審問を行う。" } },
+                { icon: "⏳🕊️", title: { en: "Do Nothing", 'zh-CN': "无所作为", 'zh-TW': "無所作為", es: "No hacer nada", ja: "何もしない" }, desc: { en: "Remain silent, avoid confrontation.", 'zh-CN': "保持沉默，避免对抗。", 'zh-TW': "保持沉默，避免對抗。", es: "Mantenerse en silencio.", ja: "沈黙を守り、対決を避ける。" } }
+            ],
+            outcomes: { en: ["You issued the Edict of Worms. Luther went into hiding, but his ideas spread like wildfire. German princes rebelled.", "You granted Luther a hearing. He refused to recant. The rift deepened.", "Your inaction allowed Luther's movement to grow unchecked. Half of Germany embraced reform."],
+                'zh-CN': ["你颁布了沃尔姆斯敕令。路德躲藏起来，但他的思想如野火般蔓延。德国诸侯反叛。", "你给予路德听证。他拒绝撤回言论，裂痕加深。", "你的不作为让路德运动肆意增长，半个德意志拥抱了改革。"],
+                'zh-TW': ["你頒布了沃爾姆斯敕令。路德躲藏起來，但他的思想如野火般蔓延。德國諸侯反叛。", "你給予路德聽證。他拒絕撤回言論，裂痕加深。", "你的不作為讓路德運動肆意增長，半個德意志擁抱了改革。"],
+                es: ["Emites el Edicto de Worms. Lutero se esconde, pero sus ideas se propagan. Los príncipes alemanes se rebelan.", "Concedes audiencia a Lutero. Se niega a retractarse.", "Tu inacción permite que el movimiento de Lutero crezca sin control."],
+                ja: ["ヴォルムス勅令を発布。ルターは潜伏するが、彼の思想は広がる。ドイツ諸侯が反乱。", "ルターに審問の機会を与える。撤回を拒否。", "不作為によりルター運動が制御不能に。" ] },
+            warExt: 0
+        },
+        { // Chapter 1: Ferdinand II, 1629
+            monarch: "Ferdinand II",
+            year: "1629",
+            bgImg: "https://tse1.mm.bing.net/th/id/OIP.1oGbY-rR_uEiO7kaexWD8gAAAA?rs=1&pid=ImgDetMain&o=7&rm=3",
+            mainTitle: { en: "🏰 CHAPTER 1: FERDINAND II · THE PROTESTANT LANDS", 'zh-CN': "🏰 第1章：斐迪南二世 · 新教领地", 'zh-TW': "🏰 第1章：斐迪南二世 · 新教領地", es: "🏰 CAPÍTULO 1: FERNANDO II · LAS TIERRAS PROTESTANTES", ja: "🏰 第1章：フェルディナント2世 · プロテスタントの領地" },
+            roleDesc: { en: "Emperor Ferdinand II. You inherited the religious conflict that Charles V began. Now you have a chance to reverse the Reformation – or make peace.", 'zh-CN': "皇帝斐迪南二世。你继承了查理五世开启的宗教冲突。现在你有机会逆转宗教改革——或者实现和平。", 'zh-TW': "皇帝斐迪南二世。你繼承了查理五世開啟的宗教衝突。現在你有機會逆轉宗教改革——或者實現和平。", es: "Emperador Fernando II. Heredaste el conflicto religioso que comenzó Carlos V.", ja: "神聖ローマ皇帝フェルディナント2世。カール5世が始めた宗教対立を継承した。" },
+            situation: { en: "1629. Your armies have won. Protestant churches and lands across northern Germany are now yours to take. The Pope praises you. Your Catholic generals urge action.",
+                'zh-CN': "1629年。你的军队获胜了。北德意志的新教教堂和土地任你夺取。教皇赞扬你。你的天主教将领敦促采取行动。",
+                'zh-TW': "1629年。你的軍隊獲勝了。北德意志的新教教堂和土地任你奪取。教皇讚揚你。你的天主教將領敦促採取行動。",
+                es: "1629. Tus ejércitos han ganado. Las iglesias y tierras protestantes del norte de Alemania son tuyas.",
+                ja: "1629年。あなたの軍が勝利した。北ドイツのプロテスタント教会と領地はあなたの手に。" },
+            options: [
+                { icon: "⛪⚔️", title: { en: "Take it all", 'zh-CN': "全部夺取", 'zh-TW': "全部奪取", es: "Tomarlo todo", ja: "全てを奪え" }, desc: { en: "Seize all Protestant church lands. Crush the Reformation.", 'zh-CN': "夺取所有新教教产，粉碎宗教改革。", 'zh-TW': "奪取所有新教教產，粉碎宗教改革。", es: "Apoderarse de todas las tierras protestantes.", ja: "全プロテスタント教会領を没収。" } },
+                { icon: "🤝🕊️", title: { en: "Share peace", 'zh-CN': "分享和平", 'zh-TW': "分享和平", es: "Paz compartida", ja: "平和を分かち合う" }, desc: { en: "Offer fair peace. Let Protestants keep some lands.", 'zh-CN': "提供公正和平，允许新教徒保留部分土地。", 'zh-TW': "提供公正和平，允許新教徒保留部分土地。", es: "Ofrecer paz justa.", ja: "公正な和平を提案。" } },
+                { icon: "⌛🛡️", title: { en: "Wait", 'zh-CN': "等待", 'zh-TW': "等待", es: "Esperar", ja: "待機" }, desc: { en: "Do nothing for now. Decide later.", 'zh-CN': "暂时按兵不动，日后决定。", 'zh-TW': "暫時按兵不動，日後決定。", es: "No hacer nada por ahora.", ja: "今は何もしない。" } }
+            ],
+            outcomes: { en: ["You issued the Edict of Restitution. Protestant princes furious. Sweden invaded. War +19 years.", "You chose moderation. War could have ended in 1629. (0 years)", "You delayed. Fighting restarted. War +19 years."],
+                'zh-CN': ["你颁布了归还敕令。新教诸侯震怒。瑞典入侵。战争+19年。", "你选择了温和政策。战争本可在1629年结束。（0年）", "你拖延了。战火重燃。战争+19年。"],
+                'zh-TW': ["你頒布了歸還敕令。新教諸侯震怒。瑞典入侵。戰爭+19年。", "你選擇了溫和政策。戰爭本可在1629年結束。（0年）", "你拖延了。戰火重燃。戰爭+19年。"],
+                es: ["Edicto de Restitución. Príncipes furiosos. Suecia invade. Guerra +19 años.", "Moderación. La guerra pudo terminar en 1629. (0 años)", "Demora. Guerra +19 años."],
+                ja: ["復旧令を発布。プロテスタント諸侯激怒。スウェーデン侵攻。戦争+19年。", "穏健策。戦争は1629年に終わり得た。（0年）", "遅延。戦争+19年。" ] },
+            warExt: [19,0,19]
+        },
+        { // Chapter 2: Ferdinand III (Wallenstein)
+            monarch: "Ferdinand III",
+            year: "1634",
+            bgImg: "https://tse1.mm.bing.net/th/id/OIP.nRcflYYnV7WW7baepjJTpAHaHa?rs=1&pid=ImgDetMain&o=7&rm=3",
+            mainTitle: { en: "⚔️ CHAPTER 2: FERDINAND III · THE DANGEROUS GENERAL", 'zh-CN': "⚔️ 第2章：斐迪南三世 · 危险的将军", 'zh-TW': "⚔️ 第2章：斐迪南三世 · 危險的將軍", es: "⚔️ CAPÍTULO 2: FERNANDO III · EL GENERAL PELIGROSO", ja: "⚔️ 第2章：フェルディナント3世 · 危険な将軍" },
+            roleDesc: { en: "Emperor Ferdinand III. You inherited a war your father could not finish. Wallenstein is your greatest weapon – and your greatest fear.", 'zh-CN': "皇帝斐迪南三世。你继承了你父亲无法结束的战争。华伦斯坦是你最强大的武器——也是你最大的恐惧。", 'zh-TW': "皇帝斐迪南三世。你繼承了你父親無法結束的戰爭。華倫斯坦是你最強大的武器——也是你最大的恐懼。", es: "Emperador Fernando III. Heredaste una guerra que tu padre no pudo terminar.", ja: "神聖ローマ皇帝フェルディナント3世。父が終えられなかった戦争を継承した。" },
+            situation: { en: "1634. Albrecht von Wallenstein commands your army. He is the best general in Europe – brilliant, rich, and unpredictable. His soldiers are loyal to him, not to you. He may betray you.",
+                'zh-CN': "1634年。阿尔布雷希特·冯·华伦斯坦指挥你的军队。他是欧洲最好的将军——才华横溢、富有且难以预测。他的士兵忠于他，而不是你。他可能会背叛你。",
+                'zh-TW': "1634年。阿爾布雷希特·馮·華倫斯坦指揮你的軍隊。他是歐洲最好的將軍——才華橫溢、富有且難以預測。他的士兵忠於他，而不是你。他可能會背叛你。",
+                es: "1634. Albrecht von Wallenstein comanda tu ejército. Es el mejor general de Europa.",
+                ja: "1634年。アルブレヒト・フォン・ヴァレンシュタインがあなたの軍を指揮する。" },
+            options: [
+                { icon: "🤝👑", title: { en: "Keep him", 'zh-CN': "留用他", 'zh-TW': "留用他", es: "Mantenerlo", ja: "留任" }, desc: { en: "Trust Wallenstein. Hope loyalty is enough.", 'zh-CN': "信任华伦斯坦，希望忠诚足够。", 'zh-TW': "信任華倫斯坦，希望忠誠足夠。", es: "Confiar en Wallenstein.", ja: "ヴァレンシュタインを信頼する。" } },
+                { icon: "🗡️⚰️", title: { en: "Kill him", 'zh-CN': "处决他", 'zh-TW': "處決他", es: "Matarlo", ja: "暗殺" }, desc: { en: "Eliminate the threat permanently. Send assassins.", 'zh-CN': "永久消除威胁。派遣刺客。", 'zh-TW': "永久消除威脅。派遣刺客。", es: "Eliminar la amenaza permanentemente.", ja: "脅威を永久に排除する。" } },
+                { icon: "📜🚪", title: { en: "Fire him", 'zh-CN': "解雇他", 'zh-TW': "解僱他", es: "Despedirlo", ja: "解任" }, desc: { en: "Remove him from command. Accept the risk.", 'zh-CN': "解除他的指挥权。接受风险。", 'zh-TW': "解除他的指揮權。接受風險。", es: "Relevarlo del mando.", ja: "指揮官から解任する。" } }
+            ],
+            outcomes: { en: ["Wallenstein stayed. He won battles but negotiated behind your back. War +14 years.", "Assassins murdered Wallenstein. Without his skill, army lost key battles. War +14 years.", "You fired Wallenstein. Swedish king crushed your armies. War +14 years."],
+                'zh-CN': ["华伦斯坦留任。他赢得战斗但在背后谈判。战争+14年。", "刺客杀死了华伦斯坦。失去他的才能，军队输掉关键战役。战争+14年。", "你解雇了华伦斯坦。瑞典国王击溃了你的军队。战争+14年。"],
+                'zh-TW': ["華倫斯坦留任。他贏得戰鬥但在背後談判。戰爭+14年。", "刺客殺死了華倫斯坦。失去他的才能，軍隊輸掉關鍵戰役。戰爭+14年。", "你解僱了華倫斯坦。瑞典國王擊潰了你的軍隊。戰爭+14年。"],
+                es: ["Wallenstein se quedó. Ganó batallas pero negoció a tus espaldas. Guerra +14 años.", "Asesinos mataron a Wallenstein. Guerra +14 años.", "Despediste a Wallenstein. El rey sueco aplastó tus ejércitos. Guerra +14 años."],
+                ja: ["ヴァレンシュタインは留任。戦闘に勝利するも背後で交渉。戦争+14年。", "暗殺者によりヴァレンシュタイン殺害。戦争+14年。", "ヴァレンシュタインを解雇。スウェーデン王に軍を粉砕される。戦争+14年。"] },
+            warExt: [14,14,14]
+        },
+        { // Chapter 3: Ferdinand III, 1648 Peace
+            monarch: "Ferdinand III",
+            year: "1648",
+            bgImg: "https://th.bing.com/th/id/R.cbd0bc0c7dddfdfaed16181e150d664e?rik=hQAulekTtKb%2bHw&pid=ImgRaw&r=0",
+            mainTitle: { en: "🕊️ CHAPTER 3: FERDINAND III · THE EXHAUSTED EMPIRE", 'zh-CN': "🕊️ 第3章：斐迪南三世 · 疲惫的帝国", 'zh-TW': "🕊️ 第3章：斐迪南三世 · 疲憊的帝國", es: "🕊️ CAPÍTULO 3: FERNANDO III · EL IMPERIO AGOTADO", ja: "🕊️ 第3章：フェルディナント3世 · 疲弊した帝国" },
+            roleDesc: { en: "Emperor Ferdinand III. You inherited a war that has consumed Europe for three decades. Eight million dead. Your people beg for peace.", 'zh-CN': "皇帝斐迪南三世。你继承了一场吞噬欧洲三十年的战争。八百万人死亡。你的人民恳求和平。", 'zh-TW': "皇帝斐迪南三世。你繼承了一場吞噬歐洲三十年的戰爭。八百萬人死亡。你的人民懇求和平。", es: "Emperador Fernando III. Heredaste una guerra que ha consumido Europa durante tres décadas.", ja: "神聖ローマ皇帝フェルディナント3世。欧州を30年消耗させた戦争を継承した。" },
+            situation: { en: "1648. After 30 years of war, up to 8 million people have died. Farms are burned. Entire regions are empty. France and Sweden demand your land for peace. Your people beg you to stop the killing.",
+                'zh-CN': "1648年。经过30年的战争，多达800万人死亡。农田被烧毁。整个地区空无一人。法国和瑞典要求割让土地以换取和平。你的人民恳求你停止杀戮。",
+                'zh-TW': "1648年。經過30年的戰爭，多達800萬人死亡。農田被燒毀。整個地區空無一人。法國和瑞典要求割讓土地以換取和平。你的人民懇求你停止杀戮。",
+                es: "1648. Después de 30 años de guerra, hasta 8 millones de personas han muerto.",
+                ja: "1648年。30年にわたる戦争の後、800万人もの人々が死亡した。" },
+            options: [
+                { icon: "📜✍️", title: { en: "Sign peace", 'zh-CN': "签署和平", 'zh-TW': "簽署和平", es: "Firmar la paz", ja: "和平に署名" }, desc: { en: "Sign the Peace of Westphalia. End the suffering.", 'zh-CN': "签署《威斯特伐利亚和约》。结束苦难。", 'zh-TW': "簽署《威斯特伐利亞和約》。結束苦難。", es: "Firmar la Paz de Westfalia.", ja: "ヴェストファーレン条約に署名する。" } },
+                { icon: "⚔️🔥", title: { en: "Fight on!", 'zh-CN': "继续战斗！", 'zh-TW': "繼續戰鬥！", es: "¡Seguir luchando!", ja: "戦闘継続！" }, desc: { en: "Refuse to surrender. Raise new armies.", 'zh-CN': "拒绝投降。招募新军队。", 'zh-TW': "拒絕投降。招募新軍隊。", es: "Rechazar la rendición.", ja: "降伏を拒否する。" } },
+                { icon: "🎭🗡️", title: { en: "Fake peace", 'zh-CN': "虚假和平", 'zh-TW': "虛假和平", es: "Paz falsa", ja: "偽りの和平" }, desc: { en: "Sign treaty but secretly rearm.", 'zh-CN': "签署条约但秘密重新武装。", 'zh-TW': "簽署條約但秘密重新武裝。", es: "Firmar pero rearmarse en secreto.", ja: "条約に署名するが密かに再軍備。" } }
+            ],
+            outcomes: { en: ["Peace of Westphalia ended the war. Killing stopped. (0 extra years)", "You kept fighting. France and Sweden demanded harsher terms. War +5 years.", "You broke the treaty. France and Sweden invaded again. War +6 years."],
+                'zh-CN': ["威斯特伐利亚和约结束了战争。杀戮停止。（额外0年）", "你继续战斗。法国和瑞典要求更苛刻的条款。战争+5年。", "你撕毁了条约。法国和瑞典再次入侵。战争+6年。"],
+                'zh-TW': ["威斯特伐利亞和約結束了戰爭。殺戮停止。（額外0年）", "你繼續戰鬥。法國和瑞典要求更苛刻的條款。戰爭+5年。", "你撕毀了條約。法國和瑞典再次入侵。戰爭+6年。"],
+                es: ["La Paz de Westfalia terminó la guerra. (0 años)", "Seguiste luchando. Guerra +5 años.", "Rompiste el tratado. Guerra +6 años."],
+                ja: ["ヴェストファーレン条約が戦争を終結。（0年）", "戦闘継続。戦争+5年。", "条約を破棄。戦争+6年。"] },
+            warExt: [0,5,6]
+        }
+    ];
+
+    const WAR_IMG = "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Battle_of_Lützen_1632.jpg/800px-Battle_of_Lützen_1632.jpg";
+    const PEACE_IMG = "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Peace_of_Westphalia%2C_Munster.jpg/800px-Peace_of_Westphalia%2C_Munster.jpg";
+
+    let currentChapterIdx = 0;
+    let decisions = [];
+    let gameActive = false;
+    const dynamicDiv = document.getElementById('dynamicContent');
+
+    function renderStartScreen() {
+        let html = `<div class="start-screen">
+            <div style="font-size:1.2rem; margin-bottom:1rem;">${t('intro_text')}</div>
+            <button id="startGameBtn" class="start-btn">${t('start_game')}</button>
+        </div>`;
+        dynamicDiv.innerHTML = html;
+        document.getElementById('startGameBtn')?.addEventListener('click', () => {
+            currentChapterIdx = 0;
+            decisions = [];
+            gameActive = true;
+            renderTitlePage();
+        });
+    }
+
+    function renderTitlePage() {
+        if (!gameActive || currentChapterIdx >= CHAPTERS.length) {
+            if (currentChapterIdx >= CHAPTERS.length) renderConsequences();
+            return;
+        }
+        const ch = CHAPTERS[currentChapterIdx];
+        const titleText = ch.mainTitle[currentLang] || ch.mainTitle.en;
+        let html = `<div class="title-page">
+            <div class="chapter-main-title">${titleText}</div>
+            <button id="nextToSceneBtn" class="proceed-btn">${t('proceed_to_choices')}</button>
+        </div>`;
+        dynamicDiv.innerHTML = html;
+        document.getElementById('nextToSceneBtn')?.addEventListener('click', () => { renderScenePage(); });
+    }
+
+    function renderScenePage() {
+        if (!gameActive || currentChapterIdx >= CHAPTERS.length) return;
+        const ch = CHAPTERS[currentChapterIdx];
+        const roleText = ch.roleDesc[currentLang] || ch.roleDesc.en;
+        const situationText = ch.situation[currentLang] || ch.situation.en;
+        let html = `<div class="scene-page">
+            <div class="cinematic-bg"><img src="${ch.bgImg}" alt="Historical scene" onerror="this.style.opacity='0.3'"></div>
+            <div class="situation-card">
+                <div class="role-line">👑 Your Role: ${roleText}</div>
+                <div class="situation-text">${situationText}</div>
+            </div>
+            <button id="proceedToOptionsBtn" class="proceed-btn">${t('proceed_to_choices')}</button>
+        </div>`;
+        dynamicDiv.innerHTML = html;
+        document.getElementById('proceedToOptionsBtn')?.addEventListener('click', () => { renderOptionsPage(); });
+    }
+
+    function renderOptionsPage() {
+        if (!gameActive || currentChapterIdx >= CHAPTERS.length) return;
+        const ch = CHAPTERS[currentChapterIdx];
+        let html = `<div class="options-page"><div class="options-grid">`;
+        ch.options.forEach((opt, idx) => {
+            html += `<div class="option-btn" data-opt-idx="${idx}">
+                <div class="option-icon">${opt.icon}</div>
+                <div class="option-text">
+                    <strong>${opt.title[currentLang] || opt.title.en}</strong><br>
+                    <span class="option-desc">${opt.desc[currentLang] || opt.desc.en}</span>
+                </div>
+            </div>`;
+        });
+        html += `</div></div>`;
+        dynamicDiv.innerHTML = html;
+        document.querySelectorAll('.option-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => { if (gameActive) handleChapterDecision(parseInt(btn.dataset.optIdx)); });
+        });
+    }
+
+    function handleChapterDecision(choiceIdx) {
+        if (!gameActive) return;
+        const ch = CHAPTERS[currentChapterIdx];
+        const outcomeText = (ch.outcomes[currentLang] || ch.outcomes.en)[choiceIdx];
+        let extension = 0;
+        if (Array.isArray(ch.warExt)) extension = ch.warExt[choiceIdx];
+        const chosenTitle = (ch.options[choiceIdx].title[currentLang] || ch.options[choiceIdx].title.en);
+        decisions.push({
+            year: ch.year,
+            monarch: ch.monarch,
+            choice: chosenTitle,
+            outcome: outcomeText,
+            extension: extension
+        });
+        const outcomeImg = (chosenTitle.includes("peace") || chosenTitle.includes("Peace") || chosenTitle.includes("Hear") || chosenTitle.includes("Share")) ? PEACE_IMG : WAR_IMG;
+        let extra = extension > 0 ? ` ⏳ War prolonged +${extension} years.` : (extension === 0 && currentChapterIdx > 0 ? ` ✨ This choice reduced suffering.` : '');
+        let nextBtnText = (currentChapterIdx === CHAPTERS.length-1) ? t('view_final') : t('continue_next');
+        let html = `<div class="outcome-full-page">
+            <img class="outcome-img" src="${outcomeImg}" onerror="this.style.display='none'">
+            <div style="font-size:2rem;text-align:center;">📜⚜️</div>
+            <h3 style="font-family:Cinzel;text-align:center;">${ch.year} · ${t('your_verdict')}</h3>
+            <p style="margin:1rem 0;font-size:1.05rem;"><strong>“${chosenTitle}”</strong></p>
+            <p>${outcomeText}</p>
+            <p style="margin-top:12px;font-style:italic;">${extra}</p>
+        </div>
+        <div class="flex-buttons">
+            <button id="nextChapterBtn" class="next-btn">${nextBtnText}</button>
+            <button id="restartBtn" class="restart-btn">${t('restart_btn')}</button>
+        </div>`;
+        dynamicDiv.innerHTML = html;
+        document.getElementById('nextChapterBtn')?.addEventListener('click', () => {
+            currentChapterIdx++;
+            if (currentChapterIdx < CHAPTERS.length) renderTitlePage();
+            else renderConsequences();
+        });
+        document.getElementById('restartBtn')?.addEventListener('click', resetToStart);
+    }
+
+    function renderConsequences() {
+        gameActive = false;
+        let totalExt = decisions.reduce((sum, d) => sum + (d.extension || 0), 0);
+        let html = `<div class="consequences-wall"><h3 style="text-align:center;">📜 CONSEQUENCES WALL</h3><div style="text-align:center;">Your decisions across the Habsburg dynasty</div>`;
+        for(let d of decisions) {
+            html += `<div class="timeline-item">
+                <div class="year">${d.year}</div>
+                <div class="decision"><strong>${d.monarch}: ${d.choice}</strong></div>
+                <div class="consequence">${d.outcome}${d.extension>0?` +${d.extension} yrs`:''}</div>
+            </div>`;
+        }
+        html += `<hr><div style="padding:12px;"><strong>Total war prolongation: +${totalExt} years.</strong><br><em>“Martin Luther nailed the 95 theses. Eight million people died. Could any have stopped it?”</em></div></div>`;
+        
+        // 生成邮件和链接分享区域
+        let summaryText = `HABSBURG CHAIR RESULTS\n\n` + decisions.map(d => `${d.year} (${d.monarch}): ${d.choice}\n→ ${d.outcome}`).join('\n\n') + `\n\nTotal war prolongation: +${totalExt} years.`;
+        let encodedSummary = encodeURIComponent(summaryText);
+        let mailtoLink = `mailto:?subject=My Habsburg Chair Decisions&body=${encodedSummary}`;
+        
+        html += `<div class="share-section">
+            <a href="${mailtoLink}" class="email-btn" style="text-decoration:none; display:inline-flex; align-items:center; gap:8px;"><span class="email-icon">📧</span> ${t('email_results')}</a>
+            <button id="copyLinkBtn" class="link-copy-btn"><span class="copy-icon">🔗</span> ${t('copy_link')}</button>
+        </div>
+        <div class="flex-buttons"><button id="finalRestart" class="restart-btn">${t('restart_btn')}</button></div>`;
+        dynamicDiv.innerHTML = html;
+        document.getElementById('finalRestart')?.addEventListener('click', resetToStart);
+        document.getElementById('copyLinkBtn')?.addEventListener('click', () => {
+            let resultUrl = window.location.href.split('#')[0] + '#results=' + btoa(JSON.stringify(decisions.map(d=>({year:d.year, monarch:d.monarch, choice:d.choice}))));
+            navigator.clipboard.writeText(resultUrl);
+            alert("Results link copied to clipboard! You can share this link.");
+        });
+    }
+
+    function resetToStart() {
+        currentChapterIdx = 0;
+        decisions = [];
+        gameActive = false;
+        renderStartScreen();
+    }
+
+    document.getElementById('languageSwitcher').addEventListener('change', (e) => {
+        currentLang = e.target.value;
+        if (gameActive === false && currentChapterIdx === 0 && decisions.length === 0) renderStartScreen();
+        else if (gameActive === true && currentChapterIdx < CHAPTERS.length) renderTitlePage();
+        else if (decisions.length > 0 && currentChapterIdx >= CHAPTERS.length) renderConsequences();
+        else renderStartScreen();
+    });
+    
+    renderStartScreen();
+</script>
+</body>
+</html>
